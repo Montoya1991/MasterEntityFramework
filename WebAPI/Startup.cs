@@ -17,6 +17,14 @@ using Dominio;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Authentication;
+using Aplicacion.Contratos;
+using Seguridad.TokenSeguridad;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace WebAPI
 {
@@ -42,7 +50,11 @@ namespace WebAPI
             // Se agregan los servicios de MediatR para el manejo de comandos y consultas.
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
             // Se configuran los controladores con FluentValidation para la validación de modelos.
-            services.AddControllers().AddFluentValidation(cgf => cgf.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+            services.AddControllers(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            }).AddFluentValidation(cgf => cgf.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 
             // Configuración de autenticación y autorización
             var builder = services.AddIdentityCore<Usuario>();
@@ -55,8 +67,23 @@ namespace WebAPI
             
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
-
             services.AddControllersWithViews();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
+            services.AddScoped<IJwtGenerador, JwtGenerador>();
+
+            services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +99,9 @@ namespace WebAPI
             //{
             //    app.UseExceptionHandler("/Home/Error");
             //}
+
+            app.UseAuthentication();
+
             app.UseStaticFiles();
 
             app.UseRouting();
