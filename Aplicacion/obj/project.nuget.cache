@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "YL1agVkfYqFTJlgF9tl2Oq38P0I30aZ9bdGdqzroU/o6MpBoj4fAu/0rpRTFJosKAtE40OZ4emqn6MqAab/oCg==",
+  "dgSpecHash": "0eDmfB/mSP9kFCV3TC43XPxfNGY0YZMWyd8bOowLt+rYxjCu7wDurE23armLXVqjBARjAAYgq+0Q13hUCK5Rig==",
   "success": true,
   "projectFilePath": "D:\\Ruta backend con C# y .NET\\EntityFrameworkcore2\\Aplicacion\\Aplicacion.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\jdmon\\.nuget\\packages\\automapper\\8.1.1\\automapper.8.1.1.nupkg.sha512",
+    "C:\\Users\\jdmon\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\6.1.1\\automapper.extensions.microsoft.dependencyinjection.6.1.1.nupkg.sha512",
     "C:\\Users\\jdmon\\.nuget\\packages\\fluentvalidation\\8.6.2\\fluentvalidation.8.6.2.nupkg.sha512",
     "C:\\Users\\jdmon\\.nuget\\packages\\fluentvalidation.aspnetcore\\8.6.2\\fluentvalidation.aspnetcore.8.6.2.nupkg.sha512",
     "C:\\Users\\jdmon\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\8.6.2\\fluentvalidation.dependencyinjectionextensions.8.6.2.nupkg.sha512",

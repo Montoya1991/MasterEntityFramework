@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Dominio
+namespace Aplicacion.Cursos
 {
-    public class Comentario
+    public class ComentarioDto
     {
         public Guid ComentarioId { get; set; } //Tipo de dato para llaves primarias
         // Identificador único del comentario.(llave primaria)
@@ -18,9 +20,5 @@ namespace Dominio
 
         public Guid CursoId { get; set; }
         // El identificador del curso al que se refiere este comentario.
-
-        public Curso Curso { get; set; }
-        // Una referencia a la clase Curso, estableciendo una relación uno a uno con el curso comentado.
-        // El CursoId se utiliza como clave foránea para definir esta relación.
     }
 }

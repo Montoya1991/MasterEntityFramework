@@ -17,6 +17,8 @@ namespace Dominio
         public DateTime? FechaPublicacion { get; set; }
         // La fecha en que el curso fue publicado. El signo de interrogación (?) indica que puede ser nulo.
 
+
+
         public Precio PrecioPromocion { get; set; }
         // Una referencia a un objeto Precio que representa el precio de promoción del curso.
         // Esto establece una relación uno a uno con la clase Precio.
