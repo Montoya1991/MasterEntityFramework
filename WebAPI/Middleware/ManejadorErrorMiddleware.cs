@@ -13,7 +13,13 @@ namespace WebAPI.Middleware
     {
         // Constructor de la clase.
         private readonly RequestDelegate _next;
+        // "RequestDelegate" representa la próxima función middleware en la cadena.
+        // "_next" es una referencia a esa función, que será invocada después de este middleware.
+
         private readonly ILogger<ManejadorErrorMiddleware> _logger;
+        // "ILogger<ManejadorErrorMiddleware>" es un objeto de registro que permite registrar eventos y errores.
+        // "_logger" es una referencia a ese objeto de registro.
+
 
         // Constructor de la clase.
         public ManejadorErrorMiddleware(RequestDelegate next, ILogger<ManejadorErrorMiddleware> logger)

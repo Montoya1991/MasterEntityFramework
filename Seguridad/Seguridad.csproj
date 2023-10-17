@@ -1,16 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
+		<!-- Define el framework de destino del proyecto -->
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 	</PropertyGroup>
+
 	<ItemGroup>
+		<!-- Define una referencia al conjunto de bibliotecas principales de ASP.NET Core -->
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
+
 	<ItemGroup>
-	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\Aplicacion\Aplicacion.csproj" />
+		<!-- Agrega una referencia al paquete NuGet "System.IdentityModel.Tokens.Jwt" -->
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!-- Define una referencia al proyecto "Aplicacion" en la solución -->
+		<ProjectReference Include="..\Aplicacion\Aplicacion.csproj" />
+	</ItemGroup>
 </Project>
+

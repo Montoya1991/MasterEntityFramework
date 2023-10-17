@@ -7,7 +7,7 @@ namespace Aplicacion.Cursos
     public class InstructorDto
     {
         public Guid InstructorId { get; set; }
-        // Identificador único del instructor. (llave primaria)
+        // Identificador único del instructor (llave primaria)
 
         public string Nombre { get; set; }
         // El nombre del instructor.

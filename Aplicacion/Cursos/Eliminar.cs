@@ -34,31 +34,33 @@ namespace Aplicacion.Cursos
             // Método para manejar la solicitud y eliminar un curso por su identificador.
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // Se eliminan las relaciones entre el curso y los instructores asociados.
                 var instructoresBD = _context.CursoInstructor.Where(x => x.CursoId == request.Id);
-                foreach(var instructor in instructoresBD)
+                foreach (var instructor in instructoresBD)
                 {
                     _context.CursoInstructor.Remove(instructor);
                 }
+
+                // Se eliminan los comentarios asociados al curso.
                 var comentariosDB = _context.Comentario.Where(x => x.CursoId == request.Id);
                 foreach (var comentario in comentariosDB)
                 {
                     _context.Comentario.Remove(comentario);
                 }
 
-                var precioDB = _context.Precio.Where(x=> x.CursoId == request.Id).FirstOrDefault();
-                if(precioDB!=null)
+                // Se elimina el precio del curso (si existe).
+                var precioDB = _context.Precio.Where(x => x.CursoId == request.Id).FirstOrDefault();
+                if (precioDB != null)
                 {
                     _context.Precio.Remove(precioDB);
                 }
+
                 // Se busca el curso en la base de datos por su identificador.
                 var curso = await _context.Curso.FindAsync(request.Id);
                 if (curso == null)
                 {
-                    // Si el curso no existe, se lanza una excepción.
-                    //throw new Exception("El curso no se puede eliminar");
-
-                    // Si el curso no se encuentra en la base de datos, se lanza una excepción específica.
-                    throw new ManejadorException(HttpStatusCode.NotFound, new { mensaje = "No se encontro el curso" }); 
+                    // Si el curso no existe, se lanza una excepción específica.
+                    throw new ManejadorException(HttpStatusCode.NotFound, new { mensaje = "No se encontró el curso" });
                 }
 
                 // Se utiliza el método Remove para marcar el curso como eliminado en el contexto.
@@ -69,8 +71,8 @@ namespace Aplicacion.Cursos
                 if (resultado > 0)
                 {
                     // Si la operación de eliminación tiene éxito, se retorna Unit.Value.
-                    //Unit.Value se utiliza para representar que la eliminación del curso
-                    //se ha llevado a cabo correctamente,
+                    // Unit.Value se utiliza para representar que la eliminación del curso
+                    // se ha llevado a cabo correctamente.
                     return Unit.Value;
                 }
 

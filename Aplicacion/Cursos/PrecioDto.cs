@@ -10,10 +10,13 @@ namespace Aplicacion.Cursos
     {
         public Guid PrecioId { get; set; }
         // Identificador único del precio. (llave primaria)
+
         public decimal PrecioActual { get; set; }
         // El precio actual del curso.
+
         public decimal Promoción { get; set; }
         // El precio de promoción del curso, si hay alguna promoción.
+
         public Guid CursoId { get; set; }
         // El identificador del curso al que está asociado este precio.
     }

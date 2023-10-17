@@ -1,6 +1,5 @@
 ﻿using Aplicacion.ManejadorError;
 using Dominio;
-//using FluentValidation;
 using FluentValidation;
 using MediatR;
 using Persistencia;
@@ -43,11 +42,15 @@ namespace Aplicacion.Cursos
         // Manejador que procesa la solicitud para editar un curso.
         public class Manejador : IRequestHandler<Ejecuta>
         {
+            // Declara un campo privado llamado "_context" de tipo "CursosOnlineContext".
+            // Este campo se utiliza para acceder a la base de datos.
             private readonly CursosOnlineContext _context;
 
-            // Constructor que recibe una instancia de CursosOnlineContext para acceder a la base de datos.
+            // Constructor de la clase "Manejador" que recibe una instancia de "CursosOnlineContext".
+            // Este constructor se utiliza para inyectar la dependencia de la base de datos en el manejador.
             public Manejador(CursosOnlineContext context)
             {
+                // Asigna la instancia de "CursosOnlineContext" proporcionada como argumento al campo privado "_context".
                 _context = context;
             }
 
@@ -72,13 +75,18 @@ namespace Aplicacion.Cursos
 
                  //Actualizar precio del curso
                  var precioEntidad = _context.Precio.Where(x=> x.CursoId == curso.CursoId).FirstOrDefault();
+                // Si se encuentra un precio existente en la base de datos para el curso:
                 if (precioEntidad != null)
                 {
+                    // - Se actualiza la propiedad "Promoción" con el valor de "request.Promocion" si no es nulo, de lo contrario, se mantiene el valor actual.
+                    // - Se actualiza la propiedad "PrecioActual" con el valor de "request.precio" si no es nulo, de lo contrario, se mantiene el valor actual.
                     precioEntidad.Promoción = request.Promocion ?? precioEntidad.Promoción;
                     precioEntidad.PrecioActual = request.precio ?? precioEntidad.PrecioActual;
                 }
                 else
                 {
+                    // Si no se encuentra un precio existente en la base de datos para el curso:
+                    // - Se crea una nueva entidad "Precio" con los valores proporcionados.
                     precioEntidad = new Precio
                     {
                         PrecioId = Guid.NewGuid(),
@@ -86,25 +94,36 @@ namespace Aplicacion.Cursos
                         Promoción = request.Promocion ?? 0,
                         CursoId = curso.CursoId,
                     };
+                    // Se agrega la nueva entidad "Precio" al contexto de la base de datos para su posterior guardado.
                     await _context.Precio.AddAsync(precioEntidad);
                 }
 
                 if (request.ListaInstructor != null)
                 {
-                    if(request.ListaInstructor.Count > 0)
+                    if (request.ListaInstructor.Count > 0)
                     {
+                        // Si se proporciona una lista de instructores en la solicitud:
+                        // - Se obtiene la lista de instructores asociados al curso desde la base de datos.
                         var instructoresBD = _context.CursoInstructor.Where(x => x.CursoId == request.CursoId).ToList();
+
+                        // - Se eliminan los registros existentes de la tabla "CursoInstructor" asociados al curso.
                         foreach (var instructorEliminarid in instructoresBD)
                         {
                             _context.CursoInstructor.Remove(instructorEliminarid);
                         }
-                        foreach ( var id in request.ListaInstructor)
+
+                        // - Se recorre la lista de instructores proporcionada en la solicitud y se crean nuevos registros en "CursoInstructor" para asociarlos al curso.
+                        // Se recorre la lista de instructores proporcionada en la solicitud.
+                        foreach (var id in request.ListaInstructor)
                         {
+                            // Se crea un nuevo registro CursoInstructor para asociar un instructor a este curso.
                             var nuevoInstructor = new CursoInstructor
                             {
-                                CursoId = request.CursoId,
-                                InstructorId = id
+                                CursoId = request.CursoId, // Se asigna el ID del curso de la solicitud.
+                                InstructorId = id // Se asigna el ID del instructor actual en el bucle.
                             };
+
+                            // Se agrega el nuevo registro CursoInstructor al contexto de la base de datos.
                             _context.CursoInstructor.Add(nuevoInstructor);
                         }
                     }

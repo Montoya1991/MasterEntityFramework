@@ -38,76 +38,88 @@ namespace WebAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Este método se llama durante la configuración de servicios.
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuración de servicios
 
-            // Se agrega la configuración de Entity Framework Core para la conexión a la base de datos.
+            // Se configura la conexión a la base de datos a través de Entity Framework Core.
             services.AddDbContext<CursosOnlineContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
             // Se agregan los servicios de MediatR para el manejo de comandos y consultas.
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
+
             // Se configuran los controladores con FluentValidation para la validación de modelos.
             services.AddControllers(opt =>
             {
+                // Se establece una política de autorización para requerir usuarios autenticados.
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             }).AddFluentValidation(cgf => cgf.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 
             // Configuración de autenticación y autorización
-            var builder = services.AddIdentityCore<Usuario>();
-            // Crear un IdentityBuilder para personalizar la configuración de autenticación
-            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            // Agregar el almacenamiento de Entity Framework para administrar usuarios y roles
-            identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
-            // Agregar el administrador de inicio de sesión personalizado para el modelo de usuario "Usuario"
-            identityBuilder.AddSignInManager<SignInManager<Usuario>>();
-            
-            services.TryAddSingleton<ISystemClock, SystemClock>();
 
-            services.AddControllersWithViews();
+            // Se configura la autenticación de usuarios con IdentityCore y Entity Framework.
+            services.AddIdentityCore<Usuario>().AddEntityFrameworkStores<CursosOnlineContext>()
+                .AddSignInManager<SignInManager<Usuario>>();
 
+            // Se agrega la autenticación basada en tokens JWT.
+            // Se crea una clave simétrica a partir de una cadena (secreta) codificada en UTF-8.
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
+
+            // Se agrega la autenticación con el esquema JwtBearer (JWT) al servicio de autenticación.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
+                // Configuración de parámetros de validación del token JWT.
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
+                    // Se especifica que se debe validar la firma del token con la clave creada anteriormente.
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
+
+                    // No se valida la audiencia (quién debe recibir el token).
                     ValidateAudience = false,
+
+                    // No se valida el emisor (quién emitió el token).
                     ValidateIssuer = false
                 };
             });
-            services.AddScoped<IJwtGenerador, JwtGenerador>();
 
+            // Se registran servicios personalizados, como IJwtGenerador e IUsuarioSesion.
+            services.AddScoped<IJwtGenerador, JwtGenerador>();
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+
+            // Se configura AutoMapper para mapeo de objetos.
             services.AddAutoMapper(typeof(Consulta.Manejador));
-            
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Este método se llama durante la configuración del pipeline de solicitud HTTP.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware<ManejadorErrorMiddleware>();
+            // Se utiliza un middleware personalizado (ManejadorErrorMiddleware) para manejar errores.
 
             if (env.IsDevelopment())
             {
+                // En entorno de desarrollo, se puede habilitar una página de errores detallados.
                 //app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //}
+            else
+            {
+                // En entornos de producción, se puede redirigir a una página de error personalizada.
+                //app.UseExceptionHandler("/Home/Error");
+            }
 
+            // Se habilita la autenticación.
             app.UseAuthentication();
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            // Se habilita la autorización.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

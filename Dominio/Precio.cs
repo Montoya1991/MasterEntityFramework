@@ -1,5 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+//Se utiliza using System.ComponentModel.DataAnnotations.Schema;
+//para aplicar anotaciones de atributos, como [Column],
+//Al especificar el tipo de columna, puedes controlar cómo se almacenan los valores en la base de datos,
+//lo que es especialmente útil cuando necesitas una precisión específica para los valores decimales
+//en la base de datos. En este caso, se ha configurado para que se utilice un tipo de columna decimal
+//con una precisión de 18 dígitos y 4 decimales.
 
 namespace Dominio
 {

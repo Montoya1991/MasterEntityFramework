@@ -1,22 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- Define el framework de destino del proyecto -->
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Dominio\Dominio.csproj" />
-  </ItemGroup>
 	<ItemGroup>
+		<!-- Define una referencia al proyecto "Dominio" en la solución -->
+		<ProjectReference Include="..\Dominio\Dominio.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Define una referencia al conjunto de bibliotecas principales de ASP.NET Core -->
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
+
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
+		<!-- Agrega referencias a paquetes NuGet -->
+
+		<!-- Paquete para la funcionalidad de Entity Framework Core para Identity en ASP.NET Core -->
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+
+		<!-- Paquete principal de Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+
+		<!-- Paquete específico para SQL Server para Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+
+		<!-- Paquete que proporciona herramientas de Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 </Project>

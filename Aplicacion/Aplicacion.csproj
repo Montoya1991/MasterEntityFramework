@@ -1,23 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- Define el framework de destino del proyecto -->
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
 	<ItemGroup>
+		<!-- Define una referencia al conjunto de bibliotecas principales de ASP.NET Core -->
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<!-- Agrega referencias a paquetes NuGet -->
 
-  <ItemGroup>
-    <ProjectReference Include="..\Dominio\Dominio.csproj" />
-    <ProjectReference Include="..\Persistencia\Persistencia.csproj" />
-  </ItemGroup>
+		<!-- Paquete para AutoMapper, utilizado para el mapeo de objetos -->
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
 
+		<!-- Paquete para FluentValidation, utilizado para validación de datos en ASP.NET Core -->
+		<PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+
+		<!-- Paquete para MediatR, utilizado para la implementación de patrones como CQRS -->
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+
+		<!-- Paquete que proporciona la funcionalidad de Entity Framework Core para Identity en ASP.NET Core -->
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+
+		<!-- Paquete que proporciona la funcionalidad central para Identity en ASP.NET Core -->
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Define las referencias a otros proyectos en la solución -->
+
+		<!-- Referencia al proyecto "Dominio" -->
+		<ProjectReference Include="..\Dominio\Dominio.csproj" />
+
+		<!-- Referencia al proyecto "Persistencia" -->
+		<ProjectReference Include="..\Persistencia\Persistencia.csproj" />
+	</ItemGroup>
 </Project>

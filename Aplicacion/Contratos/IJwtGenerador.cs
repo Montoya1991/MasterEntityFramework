@@ -7,6 +7,8 @@ namespace Aplicacion.Contratos
 {
     public interface IJwtGenerador
     {
+        // Método que genera un token JWT basado en la información del usuario.
         string CrearToken(Usuario usuario);
     }
 }
+

@@ -1,27 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+	<!-- Define las dependencias del proyecto -->
+	<ItemGroup>
+		<!-- Paquete para autenticación basada en tokens JWT -->
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+		<!-- Paquete para Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\Aplicacion\Aplicacion.csproj" />
-    <ProjectReference Include="..\Seguridad\Seguridad.csproj" />
-  </ItemGroup>
+		<!-- Paquete que proporciona herramientas de diseño para Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+		<!-- Paquete que proporciona herramientas de Entity Framework Core -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+		<!-- Paquete para el manejo de objetos JSON -->
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
+	<!-- Define las referencias a otros proyectos en la solución -->
+	<ItemGroup>
+		<ProjectReference Include="..\Aplicacion\Aplicacion.csproj" />
+		<ProjectReference Include="..\Seguridad\Seguridad.csproj" />
+	</ItemGroup>
+
+	<!-- Define una referencia al conjunto de bibliotecas principales de ASP.NET Core -->
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>

@@ -24,5 +24,4 @@ namespace Aplicacion.ManejadorError
             Errores = errores;
         }
     }
-
 }
