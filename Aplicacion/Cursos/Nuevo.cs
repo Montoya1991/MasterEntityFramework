@@ -19,6 +19,9 @@ namespace Aplicacion.Cursos
             public string Titulo { get; set; } // Título del curso
             public string Descripcion { get; set; } // Descripción del curso
             public DateTime? FechaPublicacion { get; set; } // Fecha de publicación del curso
+            public List<Guid> ListaInstructor { get; set; }
+            public decimal Precio { get; set; }
+            public decimal Promocion { get; set; }
         }
 
         public class EjecutarValidacion : AbstractValidator<Ejecuta>
@@ -40,15 +43,39 @@ namespace Aplicacion.Cursos
             }
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                Guid _cursoId = Guid.NewGuid();
                 //crea un nuevo curso con los valores que llegan a ejecuta que son los request
                 var curso = new Curso
                 {
+                    CursoId = _cursoId,
                     Titulo = request.Titulo,
                     Descripcion = request.Descripcion,
                     FechaPublicacion = request.FechaPublicacion,
                 };
                 //agrega el nuevo curso en el _context
                 _context.Curso.Add(curso);
+                if(request.ListaInstructor != null)
+                {
+                    foreach (var id in request.ListaInstructor)
+                    {
+                        var cursoInstructor = new CursoInstructor
+                        {
+                            CursoId = _cursoId,
+                            InstructorId = id,
+                        };
+                        _context.CursoInstructor.Add(cursoInstructor);
+                    }
+                }
+
+                //logica para precio del curso
+                var precioEntidad = new Precio
+                {
+                    CursoId = _cursoId,
+                    PrecioActual = request.Precio,
+                    Promoción = request.Promocion,
+                    PrecioId = Guid.NewGuid(),
+                };
+                _context.Precio.Add(precioEntidad);
                 //guarda el context en la base de datos con el nuevo curso
                 var valor = await _context.SaveChangesAsync();
                 //si devuelve un mayor a cero indica que se realizo un guardado

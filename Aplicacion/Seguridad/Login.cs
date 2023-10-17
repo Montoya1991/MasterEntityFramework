@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using FluentValidation;
-using System.Security.Cryptography.X509Certificates;
+using Aplicacion.Contratos;
 
 namespace Aplicacion.Seguridad
 {
@@ -34,10 +34,12 @@ namespace Aplicacion.Seguridad
         {
             private readonly UserManager<Usuario> _userManager;
             private readonly SignInManager<Usuario> _signInManager;
-            public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
+            private readonly IJwtGenerador _jwtGenerador;
+            public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IJwtGenerador jwtGenerador)
             {
                 _signInManager = signInManager;
                 _userManager = userManager;
+                _jwtGenerador = jwtGenerador;
             }
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
@@ -52,7 +54,7 @@ namespace Aplicacion.Seguridad
                     return new UsuarioData
                     {
                         NombreCompleto = usuario.NombreCompleto,
-                        Token = "Esta sera la data del token",
+                        Token = _jwtGenerador.CrearToken(usuario),
                         Username = usuario.UserName,
                         Email = usuario.Email,
                         Imagen = null

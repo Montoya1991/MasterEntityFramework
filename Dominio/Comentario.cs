@@ -16,7 +16,7 @@ namespace Dominio
         public string ComentarioTexto { get; set; }
         // El texto del comentario proporcionado por el alumno.
 
-        public int CursoId { get; set; }
+        public Guid CursoId { get; set; }
         // El identificador del curso al que se refiere este comentario.
 
         public Curso Curso { get; set; }

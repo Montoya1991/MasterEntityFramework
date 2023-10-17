@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Dominio
 {
-    public class Usuario : IdentityUser //esta clase contiene todas las propiedades que puede tener un usuario
+    public class Usuario : IdentityUser
     {
         public string NombreCompleto { get; set; }
     }

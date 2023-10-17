@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Aplicacion.ManejadorError;
 using System.Net;
+using System.Linq;
 
 namespace Aplicacion.Cursos
 {
@@ -15,7 +16,7 @@ namespace Aplicacion.Cursos
         // Definición de la solicitud para eliminar un curso por su identificador.
         public class Ejecuta : IRequest
         {
-            public int Id { get; set; }
+            public Guid Id { get; set; }
             // Propiedad que almacena el identificador del curso que se desea eliminar.
         }
 
@@ -33,6 +34,22 @@ namespace Aplicacion.Cursos
             // Método para manejar la solicitud y eliminar un curso por su identificador.
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                var instructoresBD = _context.CursoInstructor.Where(x => x.CursoId == request.Id);
+                foreach(var instructor in instructoresBD)
+                {
+                    _context.CursoInstructor.Remove(instructor);
+                }
+                var comentariosDB = _context.Comentario.Where(x => x.CursoId == request.Id);
+                foreach (var comentario in comentariosDB)
+                {
+                    _context.Comentario.Remove(comentario);
+                }
+
+                var precioDB = _context.Precio.Where(x=> x.CursoId == request.Id).FirstOrDefault();
+                if(precioDB!=null)
+                {
+                    _context.Precio.Remove(precioDB);
+                }
                 // Se busca el curso en la base de datos por su identificador.
                 var curso = await _context.Curso.FindAsync(request.Id);
                 if (curso == null)
